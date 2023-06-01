@@ -1,0 +1,49 @@
+version: '3'
+services:
+  db:
+    image: postgres:12
+    ports:
+      - '5432:5432/tcp'
+    restart: always
+    volumes:
+      - /var/run/postgresql:/var/run/postgresql
+    environment:
+      POSTGRES_USER: ${BACKEND_DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${BACKEND_DATABASE_PASSWORD}
+      POSTGRES_DB: ${BACKEND_DATABASE_NAME}
+      POSTGRES_HOST_AUTH_METHOD: trust
+    extra_hosts:
+      - localhost:0.0.0.0
+    networks:
+      - backend
+
+  migration:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: migration:latest
+    command: bundle exec rails db:migrate
+    depends_on:
+      - db
+    environment:
+      - RAILS_ENV=development
+    networks:
+      - backend
+
+  web:
+    image: migration:latest
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes:
+      - .:/backend
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+      - migration
+    environment:
+      - RAILS_ENV=development
+    networks:
+      - backend
+
+networks:
+  backend:
