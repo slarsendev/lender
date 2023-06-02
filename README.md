@@ -1,24 +1,28 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- A lender app(backend) containing 2 models/tables i.e. Invoices and Borrowers.
+- Invoices controller contains all the CRUD operations to support the front-end.
 
-Things you may want to cover:
+### Ruby Version
 
-* Ruby version
+- `3.0.6`
 
-* System dependencies
+### Rails Version
 
-* Configuration
+- `7.0.3`
 
-* Database creation
+### Gems Dependencies
 
-* Database initialization
+- `bundle install`
 
-* How to run the test suite
+### Migration
 
-* Services (job queues, cache servers, search engines, etc.)
+- `bundle exec rails db:migrate`
 
-* Deployment instructions
+### Start the Project
 
-* ...
+ ``` bash
+$ docker-compose up
+```
+
+This command helps you set up your application, and get it running.
